@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Naqeeb Akhtar's Portfolio</title>
+  
+  <style>
+    /* 1. Basic Page Setup (Dark Mode) */
+    body {
+      background-color: #1a1a2e;
+      color: white;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      scroll-behavior: smooth; /* Smooth scrolling ke liye */
+    }
+
+    /* 2. Floating Pill Navbar (Search Bar jaisa design) */
+    .navbar {
+      background-color: #16213e;
+      padding: 12px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 20px; /* Upar se thoda gap taaki ye tairta hua lage */
+      z-index: 1000;
+      width: 85%;
+      max-width: 600px;
+      margin: 20px auto; /* Screen ke center me lane ke liye */
+      border-radius: 30px; /* Ekdum gol kinare (pill shape) */
+      border: 2px solid #e94560; /* Pink border */
+      box-shadow: 0px 4px 15px rgba(233, 69, 96, 0.4);
+    }
+    .logo {
+      font-size: 20px;
+      font-weight: bold;
+      color: white;
+    }
+    
+    /* Menu Icon (Hamburger) */
+    .menu-icon {
+      font-size: 24px;
+      color: #e94560;
+      cursor: pointer;
+      font-weight: bold;
+      user-select: none;
+    }
+
+    /* Links ka chupa hua Dropdown Dabba */
+    .nav-links {
+      display: none; /* Pehle se chupa rahega */
+      flex-direction: column;
+      position: absolute;
+      top: 60px; /* Menu bar ke theek niche */
+      right: 20px;
+      background-color: #0f3460;
+      padding: 15px 25px;
+      border-radius: 15px;
+      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+      list-style: none;
+      margin: 0;
+      gap: 15px;
+      text-align: left;
+    }
+    
+    /* Jab JS se 'active' class add hogi, tab menu dikhega */
+    .nav-links.active {
+      display: flex; 
+    }
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+      display: block;
+    }
+    .nav-links a:hover {
+      color: #e94560;
+    }
+
+    /* 3. Main Content Wrapper */
+    .content {
+      padding: 20px;
+    }
+    
+    /* Main Heading */
+    h1 {
+      margin-top: 40px;
+      font-size: 32px;
+    }
+
+    /* 4. About Me Section */
+    .about-me {
+      background-color: #16213e;
+      padding: 25px 30px;
+      border-radius: 15px;
+      margin: 30px auto;
+      max-width: 800px;
+      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+      line-height: 1.6;
+      font-size: 16px;
+      text-align: left; /* Text ko padhne me aasaani hogi */
+    }
+    .about-me h2 {
+      color: #e94560;
+      margin-top: 0;
+      text-align: center;
+    }
+
+    /* 5. Smart Search Bar */
+    .search-container {
+      margin: 30px 0;
+    }
+    #searchInput {
+      width: 80%;
+      max-width: 500px;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 25px;
+      border: 2px solid #e94560;
+      background-color: #16213e;
+      color: white;
+      outline: none;
+      transition: box-shadow 0.3s ease;
+    }
+    #searchInput:focus {
+      box-shadow: 0px 0px 15px rgba(233, 69, 96, 0.6);
+    }
+
+    /* 6. Video Grid & Cards */
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
+      max-width: 1100px;
+      margin: 20px auto 40px auto;
+    }
+    .video-card {
+      background-color: #16213e;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s ease, box-shadow 0.3s ease; 
+    }
+    .video-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0px 10px 25px rgba(233, 69, 96, 0.4);
+    }
+    .video-card video {
+      width: 100%;
+      border-radius: 10px;
+      background-color: #000; /* Video load hone se pehle black screen */
+    }
+    .video-card h3 {
+      margin: 15px 0 10px 0;
+      font-size: 20px;
+    }
+
+    /* 7. Tags */
+    .tag {
+      display: inline-block;
+      background-color: #e94560;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      margin: 0px 5px 15px 0;
+      font-weight: bold;
+    }
+
+    /* 8. Code Dropdown (Details/Summary) */
+    pre {
+      background-color: #0f3460;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: left;
+      overflow-x: auto;
+      font-size: 14px;
+      margin-top: 15px;
+    }
+    summary {
+      cursor: pointer;
+      font-weight: bold;
+      color: white;
+      background-color: #e94560;
+      padding: 10px 20px;
+      border-radius: 25px; /* Button ko gol shape diya */
+      display: inline-block;
+      transition: background-color 0.3s ease, transform 0.2s;
+    }
+    summary:hover {
+      background-color: #d13651;
+      transform: scale(1.05);
+    }
+    summary:active {
+      transform: scale(0.95);
+    }
+
+    /* 9. Footer & Social Buttons */
+    footer {
+      padding: 40px 20px 30px 20px;
+      background-color: #0f3460; 
+      border-radius: 20px 20px 0 0;
+      font-size: 15px;
+      color: white;
+      margin-top: 50px;
+    }
+    footer h2 {
+      margin-top: 0;
+      color: #e94560;
+    }
+    footer a.email-link {
+      color: #e94560;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    footer a.email-link:hover {
+      text-decoration: underline;
+    }
+    
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .social-btn {
+      background-color: white;
+      color: #e94560;
+      padding: 10px 25px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    .social-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0,0,0,0.4);
+      background-color: #1a1a2e; /* Hover par dark blue */
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Navigation Bar -->
+  <nav class="navbar">
+    <div class="logo">Naquib Portfolio</div>
+    <div class="menu-icon" onclick="toggleMenu()">☰</div>
+    
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home" onclick="toggleMenu()">Home</a></li>
+      <li><a href="#about" onclick="toggleMenu()">About</a></li>
+      <li><a href="#videos" onclick="toggleMenu()">Animations</a></li>
+      <li><a href="#contact" onclick="toggleMenu()">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="content">
+    
+    <h1 id="home">Naquib Akhtar's Animation Portfolio</h1>
+    <p>Explore my Manim mathematical animations and Python source codes below.</p>
+
+    <!-- Smart Search Bar -->
+    <div class="search-container">
+      <input type="text" id="searchInput" onkeyup="searchVideos()" placeholder="Search animations, python, geometry...">
+    </div>
+
+    <!-- Video Grid Section -->
+    <div class="video-grid" id="videos">
+
+
+
+     <!--video-->
+      <div class="video-card">
+        <video controls>
+          <source src="videos/HarmonicWave.mp4">
+        </video>
+        <h3>Huremonic Wave</h3>
+        <span class="tag">#Manim</span>
+        <span class="tag">#Python</span>
+        <span class="tag">#Animation</span>
+        <details>
+          <summary> View Python code</summary>
+          <pre><ccode>
+from manim import *
+import numpy as np
+
+class HarmonicWave(Scene):
+    def construct(self):
+      
+        title = Text("The Harmonic Wave", font_size=42, color=WHITE, weight=BOLD)
+        self.play(Write(title))
+        self.wait(1)
+        self.play(title.animate.to_edge(UP).scale(0.8))
+
+        
+        N = 25  # 25 dots ka set
+        dots = VGroup()
+        
+        colors = color_gradient([RED, ORANGE, YELLOW, GREEN, BLUE, PURPLE, PINK], N)
+        
+        tracker = ValueTracker(0)
+        
+         
+        for i in range(N):
+            # Yahi math ka jadoo hai: speed dheere-dheere badhti hai
+            freq = 1.0 + i * 0.25  
+            y_pos = 3 - i * (6 / (N - 1))  # Screen par upar se neeche tak set karna
+            
+            dot = always_redraw(
+                lambda idx=i, f=freq, y=y_pos: Dot(
+                    point=np.array([
+                        4.0 * np.sin(f * tracker.get_value()), # X-axis par left-right ghumna
+                        y, 
+                        0
+                    ]),
+                    color=colors[idx],
+                    radius=0.12
+                )
+            )
+            dots.add(dot)
+            
+       
+        lines = always_redraw(
+            lambda: VGroup(*[
+                Line(
+                    dots[i].get_center(), 
+                    dots[i+1].get_center(), 
+                    color=colors[i], 
+                    stroke_width=4
+                )
+                for i in range(N - 1)
+            ])
+        )
+        
+       
+        self.play(FadeIn(dots), FadeIn(lines), run_time=1.5)
+        self.wait(1)
+        
+       
+        self.play(tracker.animate.set_value(8 * PI), run_time=12, rate_func=linear)
+        
+        self.wait(1)
+        
+         
+        magic_text = Text("Perfect Alignment! 🤯", font_size=36, color=YELLOW)
+        magic_text.next_to(dots, LEFT, buff=1)
+        self.play(Write(magic_text))
+        
+        self.wait(3)
+          </ccode></pre>
+        </details>
+
+      </div>
+
+      <!--video-->
+      <div class="video-card">
+        <video controls>
+          <source src="videos/DiwaliSpecialMath.mp4">
+        </video>
+        <h3>Happy Diwali</h3>
+        <span class="tag">#Manim</span>
+        <span class="tag">#Python</span>
+        <span class="tag">#Animation</span>
+        <details>
+          <summary>View python code </summary>
+          <pre><code>
+from manim import *
+import numpy as np
+import random
+
+class DiwaliSpecialMath(Scene):
+    def construct(self):
+        
+        jhalar_group = VGroup()
+        
+       
+        jhalar_curve = ParametricFunction(
+            lambda t: np.array([
+                t, 
+                3.7 - 0.55 * np.abs(np.sin(1.5 * t)), 
+                0
+            ]),
+            t_range=[-7, 7],
+            color=GOLD,
+            stroke_width=3
+        )
+        
+        
+        bulbs = VGroup()
+        bulb_colors = [YELLOW, ORANGE, RED, "#00F2FE", PINK]
+        
+        for i, x in enumerate(np.linspace(-6.8, 6.8, 35)):
+            y_curve = 3.7 - 0.55 * np.abs(np.sin(1.5 * x))
+            # Choti latakti hui ladiyan
+            drop_len = 0.3 if i % 2 == 0 else 0.65
+            wire = Line(
+                np.array([x, 3.8, 0]), 
+                np.array([x, y_curve - drop_len, 0]), 
+                stroke_width=1.2, 
+                color=GOLD_E
+            )
+            bulb = Dot(
+                point=np.array([x, y_curve - drop_len, 0]), 
+                radius=0.06, 
+                color=bulb_colors[i % len(bulb_colors)]
+            )
+            # Bulb ka halkasa glow
+            glow = Dot(
+                point=np.array([x, y_curve - drop_len, 0]), 
+                radius=0.14, 
+                color=bulb_colors[i % len(bulb_colors)]
+            ).set_opacity(0.3)
+            bulbs.add(wire, glow, bulb)
+
+        jhalar_group.add(jhalar_curve, bulbs)
+
+       
+        intro_text = Text("When Math Decorates for Diwali ✨", font_size=34, color=YELLOW)
+        intro_text.to_edge(DOWN, buff=0.4)
+
+        self.play(Create(jhalar_curve), FadeIn(bulbs, lag_ratio=0.05), Write(intro_text), run_time=2.5)
+
+        
+        rangoli = VGroup()
+        center_shift = DOWN * 0.25
+
+        
+        outer_lotus = ParametricFunction
+            lambda t: np.array[
+                (2.4 + 0.45 * np.cos(12 * t)) * np.cos(t),
+                (2.4 + 0.45 * np.cos(12 * t)) * np.sin(t),
+                0
+          </code></pre>
+        </details>
+
+      </div>
+
+      <!--video-->
+      <div class="video-card">
+        <video controls>
+          <source src="videos/MaurerRose.mp4">
+        </video>
+        <h3>Maurer Rose</h3>
+         <span class="tag">#Manim</span>
+        <span class="tag">#Python</span>
+        <span class="tag">#Animation</span>
+        <details>
+          <summary> View Python Code</summary>
+          <pre><code>
+from manim import *
+import numpy as np
+
+class MaurerRose(Scene):
+    def construct(self):
+       
+        title = Text("How Math Draws Flowers", font_size=42, gradient=(BLUE, PURPLE))
+        subtitle = Text("The Maurer Rose (n=6, d=71°)", font_size=28, color=WHITE)
+        title_group = VGroup(title, subtitle).arrange(DOWN, buff=0.2).to_edge(UP)
+        
+        self.play(Write(title_group))
+        self.wait(0.5)
+
+       
+        n = 6     
+        d = 71   
+        R = 3.2  
+        
+        
+        def get_point(k):
+            theta = k * d * DEGREES
+            r = R * np.sin(n * theta)
+            return np.array([r * np.cos(theta), r * np.sin(theta), 0])
+
+         
+        lines = VGroup()
+        colors = color_gradient([TEAL, BLUE, PURPLE, PINK, RED, YELLOW, TEAL], 361)
+        
+        for k in range(360):
+            p1 = get_point(k)
+            p2 = get_point(k + 1)
+            line = Line(p1, p2, stroke_width=1.5, color=colors[k])
+            lines.add(line)
+
+       
+        self.play(Create(lines, lag_ratio=1), run_time=12, rate_func=linear)
+        self.wait(0.5)
+
+         
+        rose_curve = ParametricFunction(
+            lambda t: np.array([
+                R * np.sin(n * t) * np.cos(t),
+                R * np.sin(n * t) * np.sin(t),
+                0
+            ]),
+            t_range=[0, 2 * PI],
+            color=WHITE,
+            stroke_width=3
+        )
+        
+         
+        self.play(Create(rose_curve), run_time=4, rate_func=smooth)
+        
+        
+        self.play(
+            lines.animate.set_stroke(width=3), 
+            rose_curve.animate.set_stroke(width=5).set_color(YELLOW),
+            run_time=1, 
+            rate_func=there_and_back
+        )
+
+        
+        final_text = Text("Mathematics is beautiful! 🤯", font_size=36, color=PINK)
+        final_text.next_to(lines, DOWN, buff=0.3)
+        self.play(Write(final_text))
+        
+        self.wait(3)
+          </code></pre>
+        </details>
+
+      </div>
+
+      
+      <!-- Video Card 1 -->
+      <div class="video-card">
+        <video controls>
+          <source src="videos/TusiCouple.mp4">
+        </video>
+        <h3>TusiCouple</h3>
+        <span class="tag">#Manim</span>
+        <span class="tag">#Python</span>
+        <span class="tag">#Animation</span>
+        
+        <details>
+          <summary>View Python Code</summary>
+          <pre><code> 
+from manim import *
+import numpy as np
+
+class TusiCouple(Scene):
+    def construct(self):
+        
+        title = Text("Mind-Bending Math Illusion", font_size=40, color=YELLOW)
+        subtitle = Text("The Tusi Couple", font_size=32, color=WHITE)
+        title_group = VGroup(title, subtitle).arrange(DOWN, buff=0.2).to_edge(UP)
+        
+        self.play(Write(title_group), run_time=1.5)
+        self.play(FadeOut(subtitle))
+
+        
+        R = 3
+        N = 16  
+        
+         
+        outer_circle = Circle(radius=R, color=TEAL, stroke_width=4)
+        self.play(Create(outer_circle), run_time=1)
+        
+        
+        lines = VGroup()
+        for i in range(N):
+            angle = i * PI / N
+            line = Line(
+                start=np.array([-R * np.cos(angle), -R * np.sin(angle), 0]),
+                end=np.array([R * np.cos(angle), R * np.sin(angle), 0]),
+                stroke_opacity=0.3,
+                stroke_width=2
+            )
+            lines.add(line)
+        
+        self.play(Create(lines), lag_ratio=0.1, run_time=2)
+        
+       
+        tracker = ValueTracker(0)
+        
+        
+        dots = VGroup()
+        colors = color_gradient([RED, ORANGE, YELLOW, GREEN, BLUE, PURPLE, PINK], N)
+        
+        for i in range(N):
+            angle = i * PI / N
+          
+            dot = always_redraw(
+                lambda idx=i, ang=angle: Dot(
+                    point=np.array([
+                        R * np.cos(tracker.get_value() + ang) * np.cos(ang),
+                        R * np.cos(tracker.get_value() + ang) * np.sin(ang),
+                        0
+                    ]),
+                    color=colors[idx],
+                    radius=0.12
+                )
+            )
+            dots.add(dot)
+
+        
+        
+        
+        self.play(FadeIn(dots[0]))
+        msg1 = Text("Just a dot moving in a straight line...", font_size=24).next_to(outer_circle, DOWN, buff=0.3)
+        self.play(Write(msg1))
+        self.play(tracker.animate.set_value(2 * PI), run_time=3, rate_func=linear)
+        
+        
+        self.play(FadeIn(dots[1]))
+        self.play(tracker.animate.set_value(4 * PI), run_time=3, rate_func=linear)
+        self.play(FadeOut(msg1))
+        
+        
+        msg2 = Text("But watch what happens with 16 lines!", font_size=24, color=YELLOW).next_to(outer_circle, DOWN, buff=0.3)
+        self.play(Write(msg2))
+        self.play(FadeIn(dots[2:]))
+        
+        
+        self.play(tracker.animate.set_value(8 * PI), run_time=6, rate_func=linear)
+        
+        
+        msg3 = Text("They form a perfectly rolling circle! 🤯", font_size=24, color=PINK).next_to(outer_circle, DOWN, buff=0.3)
+        self.play(ReplacementTransform(msg2, msg3))
+        
+        inner_circle = always_redraw(
+            lambda: Circle(radius=R/2, color=WHITE, stroke_width=3).move_to(
+                np.array([
+                    (R/2) * np.cos(tracker.get_value()),
+                    -(R/2) * np.sin(tracker.get_value()),
+                    0
+                ])
+            )
+        )
+        
+        self.play(Create(inner_circle))
+        
+         
+        self.play(tracker.animate.set_value(14 * PI), run_time=8, rate_func=linear)
+        
+        self.wait(2)
+          </code></pre>
+        </details>
+      </div>
+
+      <!-- Video Card 2 -->
+      <div class="video-card">
+        <video controls>
+          <source src="videos/LaserWormhole.mp4">
+        </video>
+        <h3>Laser Wormhole</h3>
+        <span class="tag">#3D</span>
+        <span class="tag">#GenerativeArt</span>
+        <span class="tag">#Geometry</span>
+        
+        <details>
+          <summary>View Python Code</summary>
+          <pre><code>
+from manim import *
+import numpy as np
+
+class LaserWormhole(ThreeDScene):
+    def construct(self):
+         
+        title = Text("The 3D Laser Wormhole", font_size=36, color="#00F2FE", weight=BOLD)
+        subtitle = Text("Straight Lines Creating a 3D Curve!", font_size=22, color=WHITE)
+        header = VGroup(title, subtitle).arrange(DOWN, aligned_edge=LEFT, buff=0.1).to_corner(UL)
+        
+        self.add_fixed_in_frame_mobjects(header)
+        self.play(Write(header), run_time=1.5)
+
+        
+        self.set_camera_orientation(phi=68 * DEGREES, theta=30 * DEGREES)
+
+        
+        R = 2.4       # Rings ka radius
+        H = 2.2       # Upar aur neeche ki unchai (Height)
+        N = 48        # Laser lines ki sankhya
+        
+        twist = ValueTracker(0)  # Yeh tracker cylinder ko twist karega
+
+        
+        top_ring = Circle(radius=R, color=WHITE, stroke_width=4).shift(OUT * H)
+        bottom_ring = Circle(radius=R, color=WHITE, stroke_width=4).shift(IN * H)
+
+        
+        colors = color_gradient(["#00F2FE", BLUE, PURPLE, PINK, "#FF0844", YELLOW, "#00F2FE"], N)
+
+        
+        lasers = always_redraw(
+            lambda: VGroup(*[
+                Line(
+                    start=np.array([
+                        R * np.cos(2 * PI * i / N),
+                        R * np.sin(2 * PI * i / N),
+                        -H
+                    ]),
+                    end=np.array([
+                        R * np.cos(2 * PI * i / N + twist.get_value()),
+                        R * np.sin(2 * PI * i / N + twist.get_value()),
+                        H
+                    ]),
+                    color=colors[i],
+                    stroke_width=3.5
+                )
+                for i in range(N)
+            ])
+        )
+
+        
+        self.play(Create(top_ring), Create(bottom_ring), run_time=1.5)
+        self.play(Create(lasers), run_time=2)
+        
+        
+        self.begin_ambient_camera_rotation(rate=0.35)
+        self.wait(1)
+
+       
+        self.play(twist.animate.set_value(0.75 * PI), run_time=4, rate_func=smooth)
+        self.wait(1.5)
+
+         
+        self.play(twist.animate.set_value(PI), run_time=3, rate_func=smooth)
+        self.wait(1)
+
+      
+        self.play(twist.animate.set_value(-0.75 * PI), run_time=5, rate_func=smooth)
+        self.wait(2)
+
+       
+        self.stop_ambient_camera_rotation()
+        self.play(
+            FadeOut(lasers), 
+            FadeOut(top_ring), 
+            FadeOut(bottom_ring), 
+            FadeOut(header), 
+            run_time=1.5
+        )
+        self.wait(0.5)
+          </code></pre>
+        </details>
+      </div>
+      <!--video 3-->
+      <div class="video-card">
+        <video controls>
+            <source src="videos/CyberpunkPortal.mp4">
+        </video>
+        <h3>CyberpunkPortal</h3>
+        <span class="tag">#3D</span>
+        <span class="tag">#manim</span>
+        <span class="tag">#animation</span>
+        <details>
+          <summary>View Python Code</summary>
+          <pre><code>
+from manim import *
+import numpy as np
+
+class CyberpunkPortal(ThreeDScene):
+    def construct(self):
+        
+        title = Text("The 3D Torus Knot", font_size=36, color=BLUE, weight=BOLD)
+        subtitle = Text("A Mathematical Portal", font_size=24, color=WHITE)
+        group = VGroup(title, subtitle).arrange(DOWN, buff=0.1).to_corner(UL)
+        
+        self.add_fixed_in_frame_mobjects(group)
+        self.play(Write(group), run_time=1.5)
+
+        
+        self.set_camera_orientation(phi=75 * DEGREES, theta=30 * DEGREES)
+
+        
+        def torus_knot(t):
+            p = 3  # लूप की संख्या (Hole के आर-पार)
+            q = 7  # ट्यूब के आर-पार घुमाव
+            r_main = 3  # पोर्टल की चौड़ाई
+            r_tube = 1  # मोटाई
+            
+            x = (r_main + r_tube * np.cos(p * t)) * np.cos(q * t)
+            y = (r_main + r_tube * np.cos(p * t)) * np.sin(q * t)
+            z = r_tube * np.sin(p * t)
+            return np.array([x, y, z])
+
+       
+        portal = ParametricFunction(
+            torus_knot,
+            t_range=[0, 2 * PI],
+            stroke_width=8
+        )
+       
+        portal.set_color_by_gradient("#00F2FE", "#4FACFE", "#FF0844", "#FFB199", "#00F2FE")
+
+         
+        self.begin_ambient_camera_rotation(rate=0.4)  
+        
+        
+        self.play(Create(portal), run_time=8, rate_func=linear)
+        
+        
+        for _ in range(3):
+            self.play(portal.animate.set_stroke(width=16), run_time=0.5, rate_func=there_and_back)
+
+        
+        self.stop_ambient_camera_rotation()
+        
+       
+        self.play(FadeOut(portal), FadeOut(group))
+        self.wait(1)
+          </code></pre>
+        </details>
+      </div>
+
+      <!--video 4-->
+      <div class="video-card">
+         <video controls>
+          <source src="videos/StringArt.mp4">
+         </video>
+        <h3>String art</h3>
+        <span class="tag">#2d</span>
+         <span class="tag">#manim</span>
+          <span class="tag">#animation</span>
+          <details>
+            <summary>View Python Code</summary>
+            <pre><code>
+from manim import *
+import numpy as np
+
+class StringArt(Scene):
+    def construct(self):
+         
+        title = Text("The Hidden Geometry of Numbers", font_size=42, color=YELLOW)
+        self.play(Write(title))
+        self.wait(1)
+        self.play(title.animate.to_edge(UP).scale(0.7))
+
+      
+        N = 150  
+        R = 3    
+        
+       
+        circle = Circle(radius=R, color=WHITE, stroke_width=2)
+        self.play(Create(circle), run_time=1)
+        
+        multiplier = ValueTracker(0) 
+        
+        def get_point(i):
+            angle = 2 * PI * i / N + PI/2 
+            return np.array([R * np.cos(angle), R * np.sin(angle), 0])
+            
+        
+        lines = VGroup(*[Line(ORIGIN, RIGHT, stroke_width=1.5) for _ in range(N)])
+        
+        colors = color_gradient([TEAL, BLUE, PURPLE, PINK, RED, YELLOW], N)
+        
+        
+        def update_lines(mobs):
+            m = multiplier.get_value()
+            for i, line in enumerate(mobs):
+                p1 = get_point(i)               
+                p2 = get_point((i * m) % N)     
+                
+                 
+                if np.linalg.norm(p1 - p2) < 1e-5:
+                    p2 = p1 + RIGHT * 0.001
+                    
+                line.put_start_and_end_on(p1, p2)
+                line.set_color(colors[i])
+                
+        lines.add_updater(update_lines)
+        self.add(lines)
+        
+        m_text = always_redraw(
+            lambda: Text(f"Multiplier: {multiplier.get_value():.2f}", font_size=28, color=WHITE).to_corner(UP)
+        )
+        self.add(m_text)
+        
+         
+        self.play(multiplier.animate.set_value(2), run_time=5, rate_func=smooth)
+        self.wait(1)
+        
+        self.play(multiplier.animate.set_value(3), run_time=4, rate_func=smooth)
+        self.wait(1)
+        
+        self.play(multiplier.animate.set_value(6), run_time=10, rate_func=linear)
+        self.wait(2)
+        
+         
+        lines.clear_updaters()
+        self.play(FadeOut(lines), FadeOut(circle), FadeOut(title), FadeOut(m_text))
+        
+        final_text = Text("Math is Art.", font_size=45, color=PINK)
+        self.play(Write(final_text))
+        self.wait(2)
+            </code></pre>
+          </details>
+
+      </div>
+
+      <!--video-->
+      <div class="video-card">
+        <video controls>
+          <source src="videos/QuantumCore.mp4">
+        </video>
+        <h3>Quantom Core</h3>
+        <spma class="tag">#3d</spma>
+        <spma class="tag">#manim</spma>
+        <spma class="tag">#animation</spma>
+        <details>
+          <summary>View Code</summary>
+          <pre><code>
+from manim import *
+import numpy as np
+
+class QuantumCore(ThreeDScene):
+    def construct(self):
+        
+        title = Text("The Quantum Core", font_size=38, color=TEAL, weight=BOLD)
+        subtitle = Text("3D Spherical Spirals", font_size=24, color=WHITE)
+        group = VGroup(title, subtitle).arrange(DOWN, buff=0.1).to_corner(UL)
+        
+        self.add_fixed_in_frame_mobjects(group)
+        self.play(Write(group), run_time=1.5)
+
+        
+        self.set_camera_orientation(phi=65 * DEGREES, theta=45 * DEGREES)
+
+        
+        def create_orb(radius, turns, color_grad):
+            return ParametricFunction(
+                lambda t: np.array([
+                    radius * np.sin(t) * np.cos(turns * t),
+                    radius * np.sin(t) * np.sin(turns * t),
+                    radius * np.cos(t)
+                ]),
+                t_range=[0, PI],
+                stroke_width=5
+            ).set_color_by_gradient(*color_grad)
+
+         
+        orb_outer = create_orb(3.2, 25, ["#00F2FE", "#4FACFE", "#00F2FE"]) 
+        # बीच की लेयर (Red / Pink)
+        orb_mid = create_orb(2.2, -20, ["#FF0844", "#FFB199", "#FF0844"])   
+        
+        orb_inner = create_orb(1.2, 15, ["#F9D423", "#FF4E50", "#F9D423"])  
+
+        
+        self.begin_ambient_camera_rotation(rate=0.3)
+        
+         
+        self.play(Create(orb_outer), run_time=3, rate_func=smooth)
+        self.play(Create(orb_mid), run_time=2.5, rate_func=smooth)
+        self.play(Create(orb_inner), run_time=2, rate_func=smooth)
+
+        self.wait(0.5)
+
+         
+        self.play(
+            orb_outer.animate.rotate(2 * PI, axis=RIGHT), # X-axis पर घूमेगा
+            orb_mid.animate.rotate(2 * PI, axis=UP),      # Y-axis पर घूमेगा
+            orb_inner.animate.rotate(2 * PI, axis=OUT),   # Z-axis पर घूमेगा
+            run_time=6,
+            rate_func=linear
+        )
+        
+       
+        self.wait(1)
+        self.stop_ambient_camera_rotation()
+        self.play(FadeOut(orb_outer), FadeOut(orb_mid), FadeOut(orb_inner), FadeOut(group))
+        self.wait(1)
+          </code></pre>
+        </details>
+      </div>
+
+  </div> <!-- Content End -->
+
+   <!-- About Me Section -->
+    <div class="about-me" id="about">
+      <h2>About Me</h2>
+      <p>Hi, I am <strong>Naquib Akhtar</strong>. I recently completed my Class 12 with a PCM focus and am currently on a dedicated drop year preparing for JEE, with a long-term vision of contributing to space research at ISRO.</p>
+      <p>Alongside my physics and physical chemistry studies, I am deeply passionate about programming. I use Python and the Manim engine to programmatically render 2D and 3D mathematical animations, turning complex formulas into visual geometric proofs.</p>
+    </div>
+
+
+  <!-- Footer / Contact Section -->
+  <footer id="contact">
+    <h2>My Profiles</h2>
+    
+    <p><strong>Mobile:</strong> +91-8102053448</p>
+    <p><strong>Email:</strong> <a href="mailto:naquibakhter319@gmail.com" class="email-link">naquibakhter319@gmail.com</a></p>
+    
+    <p style="margin-top: 25px; font-weight: bold;">Follow Me:</p>
+    
+    <div class="social-links">
+      <a href="https://github.com/NaquibAkkhter" target="_blank" class="social-btn">GitHub</a>
+      <a href="https://www.instagram.com/hellomath348?obrf=MW42b3NoYTRmcTU4Mg==" target="_blank" class="social-btn">Instagram</a>
+      <a href="https://www.youtube.com/@Hello_Math-n" target="_blank" class="social-btn">YouTube</a>
+    </div>
+    
+    <br><br>
+    <p style="font-size: 13px; opacity: 0.8;">Created with Naquib Akhtar</p>
+  </footer>
+
+  <!-- JavaScript for Search and Menu -->
+  <script>
+    // Menu Dropdown Logic
+    function toggleMenu() {
+      let menu = document.getElementById("navLinks");
+      menu.classList.toggle("active");
+    }
+
+    // Smart Video Search Logic
+    function searchVideos() {
+      let input = document.getElementById('searchInput').value.toLowerCase();
+      let cards = document.getElementsByClassName('video-card');
+
+      for (let i = 0; i < cards.length; i++) {
+        let cardText = cards[i].innerText.toLowerCase();
+        if (cardText.includes(input)) {
+          cards[i].style.display = ""; 
+        } else {
+          cards[i].style.display = "none"; 
+        }
+      }
+    }
+  </script>
+
+</body>
+</html>
